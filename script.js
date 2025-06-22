@@ -62,3 +62,35 @@ function update() {
 }
 
 setInterval(update, 1000 / 60);
+
+
+
+function moveBall() {
+  ball.x += ball.speedX;
+  ball.y += ball.speedY;
+
+  if (ball.x < ball.size || ball.x > canvas.width - ball.size) ball.speedX *= -1;
+  if (ball.y < ball.size) ball.speedY *= -1;
+
+  // Colisión con la paleta
+  if (
+    ball.y + ball.size > canvas.height - paddle.height - 10 &&
+    ball.x > paddle.x &&
+    ball.x < paddle.x + paddle.width
+  ) {
+    ball.speedY *= -1;
+  }
+
+  // Reiniciar si cae
+  if (ball.y > canvas.height) {
+    ball.x = canvas.width / 2;
+    ball.y = canvas.height - 30;
+    ball.speedY = -4;
+  }
+}
+
+function update() {
+  movePaddle();
+  moveBall();
+  render();
+}
