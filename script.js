@@ -37,3 +37,28 @@ function render() {
 }
 
 setInterval(render, 1000 / 60);
+
+function movePaddle() {
+  paddle.x += paddle.dx;
+  if (paddle.x < 0) paddle.x = 0;
+  if (paddle.x + paddle.width > canvas.width) paddle.x = canvas.width - paddle.width;
+}
+
+function keyDown(e) {
+  if (e.key === "ArrowRight") paddle.dx = paddle.speed;
+  else if (e.key === "ArrowLeft") paddle.dx = -paddle.speed;
+}
+
+function keyUp(e) {
+  if (e.key === "ArrowRight" || e.key === "ArrowLeft") paddle.dx = 0;
+}
+
+document.addEventListener("keydown", keyDown);
+document.addEventListener("keyup", keyUp);
+
+function update() {
+  movePaddle();
+  render();
+}
+
+setInterval(update, 1000 / 60);
