@@ -1,7 +1,6 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Configuración de bloques
 const brick = {
   rowCount: 3,
   columnCount: 6,
@@ -12,7 +11,6 @@ const brick = {
   offsetLeft: 35,
 };
 
-// Crear matriz de bloques
 let bricks = [];
 for (let c = 0; c < brick.columnCount; c++) {
   bricks[c] = [];
@@ -36,7 +34,6 @@ function drawBricks() {
   }
 }
 
-// Configuración de la paleta
 const paddle = {
   width: 100,
   height: 10,
@@ -45,7 +42,6 @@ const paddle = {
   dx: 0,
 };
 
-// Configuración de la pelota
 const ball = {
   x: canvas.width / 2,
   y: canvas.height - 30,
@@ -86,11 +82,9 @@ function moveBall() {
   ball.x += ball.speedX;
   ball.y += ball.speedY;
 
-  // Colisión con bordes
   if (ball.x < ball.size || ball.x > canvas.width - ball.size) ball.speedX *= -1;
   if (ball.y < ball.size) ball.speedY *= -1;
 
-  // Colisión con la paleta
   if (
     ball.y + ball.size > canvas.height - paddle.height - 10 &&
     ball.x > paddle.x &&
@@ -99,7 +93,6 @@ function moveBall() {
     ball.speedY *= -1;
   }
 
-  // Si la pelota cae → reiniciar juego
   if (ball.y > canvas.height) {
     resetGame();
   }
@@ -125,17 +118,14 @@ function collisionDetection() {
 }
 
 function resetGame() {
-  // Reiniciar la pelota
   ball.x = canvas.width / 2;
   ball.y = canvas.height - 30;
   ball.speedX = 4;
   ball.speedY = -4;
 
-  // Reiniciar la paleta
   paddle.x = (canvas.width - paddle.width) / 2;
   paddle.dx = 0;
 
-  // Restaurar los bloques
   for (let c = 0; c < brick.columnCount; c++) {
     for (let r = 0; r < brick.rowCount; r++) {
       bricks[c][r].status = 1;
@@ -150,7 +140,6 @@ function update() {
   render();
 }
 
-// Detectar teclas
 function keyDown(e) {
   if (e.key === "ArrowRight") {
     paddle.dx = paddle.speed;
@@ -168,5 +157,4 @@ function keyUp(e) {
 document.addEventListener("keydown", keyDown);
 document.addEventListener("keyup", keyUp);
 
-// Iniciar bucle del juego
 setInterval(update, 1000 / 60);
