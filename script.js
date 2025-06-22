@@ -34,8 +34,6 @@ function drawBricks() {
   }
 }
 
-Agrega `drawBricks()` en `render()`.
-
 const paddle = {
   width: 100,
   height: 10,
@@ -72,28 +70,13 @@ function render() {
   drawBall();
 }
 
-
 function movePaddle() {
   paddle.x += paddle.dx;
   if (paddle.x < 0) paddle.x = 0;
-  if (paddle.x + paddle.width > canvas.width) paddle.x = canvas.width - paddle.width;
+  if (paddle.x + paddle.width > canvas.width) {
+    paddle.x = canvas.width - paddle.width;
+  }
 }
-
-function keyDown(e) {
-  if (e.key === "ArrowRight") paddle.dx = paddle.speed;
-  else if (e.key === "ArrowLeft") paddle.dx = -paddle.speed;
-}
-
-function keyUp(e) {
-  if (e.key === "ArrowRight" || e.key === "ArrowLeft") paddle.dx = 0;
-}
-
-document.addEventListener("keydown", keyDown);
-document.addEventListener("keyup", keyUp);
-
-
-setInterval(update, 1000 / 60);
-
 
 function moveBall() {
   ball.x += ball.speedX;
@@ -102,7 +85,6 @@ function moveBall() {
   if (ball.x < ball.size || ball.x > canvas.width - ball.size) ball.speedX *= -1;
   if (ball.y < ball.size) ball.speedY *= -1;
 
-  // Colisión con la paleta
   if (
     ball.y + ball.size > canvas.height - paddle.height - 10 &&
     ball.x > paddle.x &&
@@ -111,19 +93,15 @@ function moveBall() {
     ball.speedY *= -1;
   }
 
-  // Reiniciar si cae
   if (ball.y > canvas.height) {
-    ball.x = canvas.width / 2;
-    ball.y = canvas.height - 30;
-    ball.speedY = -4;
+    resetGame();
   }
 }
-
 
 function collisionDetection() {
   for (let c = 0; c < brick.columnCount; c++) {
     for (let r = 0; r < brick.rowCount; r++) {
-      let b = bricks[c][r];
+      const b = bricks[c][r];
       if (b.status === 1) {
         if (
           ball.x > b.x &&
@@ -139,6 +117,23 @@ function collisionDetection() {
   }
 }
 
+function resetGame() {
+  // Reiniciar la pelota
+  ball.x = canvas.width / 2;
+  ball.y = canvas.height - 30;
+  ball.speedX = 4;
+  ball.speedY = -4;
+
+  paddle.x = (canvas.width - paddle.width) / 2;
+  paddle.dx = 0;
+
+  for (let c = 0; c < brick.columnCount; c++) {
+    for (let r = 0; r < brick.rowCount; r++) {
+      bricks[c][r].status = 1;
+    }
+  }
+}
+
 function update() {
   movePaddle();
   moveBall();
@@ -146,3 +141,22 @@ function update() {
   render();
 }
 
+function keyDown(e) {
+  if (e.key === "ArrowRight") {
+    paddle.dx = paddle.speed;
+  } else if (e.key === "ArrowLeft") {
+    paddle.dx = -paddle.speed;
+  }
+}
+
+function keyUp(e) {
+  if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+    paddle.dx = 0;
+  }
+}
+
+document.addEventListener("keydown", keyDown);
+document.addEventListener("keyup", keyUp);
+
+// Iniciar bucle del juego
+setInterval(update, 1000 / 60);
