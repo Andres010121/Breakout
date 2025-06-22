@@ -1,6 +1,41 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+const brick = {
+  rowCount: 3,
+  columnCount: 6,
+  width: 100,
+  height: 20,
+  padding: 10,
+  offsetTop: 50,
+  offsetLeft: 35,
+};
+
+let bricks = [];
+for (let c = 0; c < brick.columnCount; c++) {
+  bricks[c] = [];
+  for (let r = 0; r < brick.rowCount; r++) {
+    bricks[c][r] = { x: 0, y: 0, status: 1 };
+  }
+}
+
+function drawBricks() {
+  for (let c = 0; c < brick.columnCount; c++) {
+    for (let r = 0; r < brick.rowCount; r++) {
+      if (bricks[c][r].status === 1) {
+        const brickX = c * (brick.width + brick.padding) + brick.offsetLeft;
+        const brickY = r * (brick.height + brick.padding) + brick.offsetTop;
+        bricks[c][r].x = brickX;
+        bricks[c][r].y = brickY;
+        ctx.fillStyle = "#00f";
+        ctx.fillRect(brickX, brickY, brick.width, brick.height);
+      }
+    }
+  }
+}
+
+Agrega `drawBricks()` en `render()`.
+
 const paddle = {
   width: 100,
   height: 10,
