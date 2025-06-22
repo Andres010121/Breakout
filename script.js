@@ -67,11 +67,11 @@ function drawBall() {
 
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBricks();
   drawPaddle();
   drawBall();
 }
 
-setInterval(render, 1000 / 60);
 
 function movePaddle() {
   paddle.x += paddle.dx;
@@ -91,13 +91,8 @@ function keyUp(e) {
 document.addEventListener("keydown", keyDown);
 document.addEventListener("keyup", keyUp);
 
-function update() {
-  movePaddle();
-  render();
-}
 
 setInterval(update, 1000 / 60);
-
 
 
 function moveBall() {
@@ -124,11 +119,6 @@ function moveBall() {
   }
 }
 
-function update() {
-  movePaddle();
-  moveBall();
-  render();
-}
 
 function collisionDetection() {
   for (let c = 0; c < brick.columnCount; c++) {
