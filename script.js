@@ -129,3 +129,30 @@ function update() {
   moveBall();
   render();
 }
+
+function collisionDetection() {
+  for (let c = 0; c < brick.columnCount; c++) {
+    for (let r = 0; r < brick.rowCount; r++) {
+      let b = bricks[c][r];
+      if (b.status === 1) {
+        if (
+          ball.x > b.x &&
+          ball.x < b.x + brick.width &&
+          ball.y > b.y &&
+          ball.y < b.y + brick.height
+        ) {
+          ball.speedY *= -1;
+          b.status = 0;
+        }
+      }
+    }
+  }
+}
+
+function update() {
+  movePaddle();
+  moveBall();
+  collisionDetection();
+  render();
+}
+
